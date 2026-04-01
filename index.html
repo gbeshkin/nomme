@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+  <meta charset="UTF-8" />
+  <title>Nõmme ajalooline kaart</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+    #map {
+      height: 100vh;
+    }
+    .title {
+      position: absolute;
+      z-index: 1000;
+      background: white;
+      padding: 10px 15px;
+      margin: 10px;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="title">📍 Nõmme ajalooline kaart</div>
+<div id="map"></div>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+  // Kaardi keskpunkt (Nõmme)
+  const map = L.map('map').setView([59.385, 24.677], 13);
+
+  // Kaardikiht (OpenStreetMap)
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap'
+  }).addTo(map);
+
+  // 📍 Kohad
+  const places = [
+    {
+      name: "Glehni loss",
+      coords: [59.3866, 24.6686],
+      desc: "Nõmme peamine vaatamisväärsus, ehitatud Nikolai von Glehni poolt"
+    },
+    {
+      name: "Glehni park",
+      coords: [59.3863, 24.6692],
+      desc: "Park skulptuuridega (Kalevipoeg, krokodill)"
+    },
+    {
+      name: "Nõmme turg",
+      coords: [59.3869, 24.6842],
+      desc: "1930. aastate ajalooline turg"
+    },
+    {
+      name: "Nõmme raudteejaam",
+      coords: [59.3865, 24.6837],
+      desc: "Raudteejaam – Nõmme arengu alguspunkt"
+    },
+    {
+      name: "Nõmme muuseum",
+      coords: [59.3864, 24.6835],
+      desc: "Muuseum, mis tutvustab Nõmme ajalugu"
+    },
+    {
+      name: "Nõmme Rahu kirik",
+      coords: [59.3815, 24.6766],
+      desc: "Nõmme ajalooline kirik"
+    },
+    {
+      name: "Rahumäe kalmistu",
+      coords: [59.3755, 24.6933],
+      desc: "Ajalooline kalmistu"
+    },
+    {
+      name: "Nõmme-Mustamäe maastikukaitseala",
+      coords: [59.395, 24.660],
+      desc: "Looduslik maastikukaitseala"
+    },
+    {
+      name: "Glehni allikas",
+      coords: [59.3860, 24.6675],
+      desc: "Looduslik veeallikas"
+    }
+  ];
+
+  // Markerite lisamine
+  places.forEach(place => {
+    L.marker(place.coords)
+      .addTo(map)
+      .bindPopup(`<b>${place.name}</b><br>${place.desc}`);
+  });
+
+</script>
+
+</body>
+</html>
