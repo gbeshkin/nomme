@@ -4,8 +4,6 @@
   <meta charset="UTF-8" />
   <title>Nõmme ajalooline kaart</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
 
   <style>
@@ -13,9 +11,11 @@
       margin: 0;
       font-family: Arial, sans-serif;
     }
+
     #map {
       height: 100vh;
     }
+
     .title {
       position: absolute;
       z-index: 1000;
@@ -25,82 +25,114 @@
       border-radius: 8px;
       font-weight: bold;
     }
+
+    .popup-content {
+      width: 220px;
+    }
+
+    .popup-content img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
+
+    .popup-content h3 {
+      margin: 0 0 6px 0;
+      font-size: 16px;
+    }
+
+    .popup-content p {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.4;
+    }
   </style>
 </head>
-
 <body>
 
 <div class="title">📍 Nõmme ajalooline kaart</div>
 <div id="map"></div>
 
-<!-- Leaflet JS -->
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
 <script>
-  // Kaardi keskpunkt (Nõmme)
   const map = L.map('map').setView([59.385, 24.677], 13);
 
-  // Kaardikiht (OpenStreetMap)
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; OpenStreetMap'
   }).addTo(map);
 
-  // 📍 Kohad
   const places = [
     {
       name: "Glehni loss",
       coords: [59.3866, 24.6686],
-      desc: "Nõmme peamine vaatamisväärsus, ehitatud Nikolai von Glehni poolt"
+      shortText: "Nõmme kuulsaim ajalooline ehitis, mille rajas Nikolai von Glehn.",
+      image: "https://upload.wikimedia.org/wikipedia/commons/1/11/Glehni_loss_2025.jpg"
     },
     {
       name: "Glehni park",
       coords: [59.3863, 24.6692],
-      desc: "Park skulptuuridega (Kalevipoeg, krokodill)"
+      shortText: "Ajalooline park, kus asuvad kuulsad skulptuurid ja jalutusteed.",
+      image: "https://upload.wikimedia.org/wikipedia/commons/3/32/%C2%ABKrokodill%C2%BB_Glehni_pargis_89.jpg"
     },
     {
       name: "Nõmme turg",
       coords: [59.3869, 24.6842],
-      desc: "1930. aastate ajalooline turg"
+      shortText: "Traditsiooniline turg, mis on olnud kohaliku elu keskpunkt juba aastakümneid.",
+      image: "https://visitestonia.com/images/3316958/_DSF9546.jpg"
     },
     {
       name: "Nõmme raudteejaam",
       coords: [59.3865, 24.6837],
-      desc: "Raudteejaam – Nõmme arengu alguspunkt"
+      shortText: "Raudteejaam, mille ümber hakkas kujunema kogu Nõmme piirkond.",
+      image: "https://upload.wikimedia.org/wikipedia/commons/9/95/N%C3%B5mme_railway_station_2024.jpg"
     },
     {
       name: "Nõmme muuseum",
       coords: [59.3864, 24.6835],
-      desc: "Muuseum, mis tutvustab Nõmme ajalugu"
+      shortText: "Muuseum, kus saab tutvuda Nõmme ajaloo ja kohaliku elu arenguga.",
+      image: "https://live.s3.teliahybridcloud.com/s3fs-public/image_bank_foto/2023-01/N%C3%B5mme%20muuseum.jpg"
     },
     {
       name: "Nõmme Rahu kirik",
       coords: [59.3815, 24.6766],
-      desc: "Nõmme ajalooline kirik"
+      shortText: "Nõmme oluline ajalooline kirik ja kohaliku kogukonna sümbol.",
+      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/N6mme_rahu_kirik_2007_veebruar.jpg/960px-N6mme_rahu_kirik_2007_veebruar.jpg"
     },
     {
       name: "Rahumäe kalmistu",
       coords: [59.3755, 24.6933],
-      desc: "Ajalooline kalmistu"
+      shortText: "Ajalooline kalmistu, mis peegeldab piirkonna kultuurilugu.",
+      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Rahum%C3%A4e_kalmistu_peav%C3%A4rav.jpg/960px-Rahum%C3%A4e_kalmistu_peav%C3%A4rav.jpg"
     },
     {
       name: "Nõmme-Mustamäe maastikukaitseala",
       coords: [59.395, 24.660],
-      desc: "Looduslik maastikukaitseala"
+      shortText: "Kaunis loodusala, kus kohtuvad Nõmme ajalugu ja metsamaastik.",
+      image: "https://visitestonia.com/images/3306490/N%C3%B5mme-Mustam%C3%A4e_maastikukaitseala.jpg"
     },
     {
       name: "Glehni allikas",
       coords: [59.3860, 24.6675],
-      desc: "Looduslik veeallikas"
+      shortText: "Looduslik allikas, mis on seotud Glehni pargi ajaloolise ümbrusega.",
+      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Glehni_allikas.jpg/800px-Glehni_allikas.jpg"
     }
   ];
 
-  // Markerite lisamine
   places.forEach(place => {
+    const popupHtml = `
+      <div class="popup-content">
+        <img src="${place.image}" alt="${place.name}">
+        <h3>${place.name}</h3>
+        <p>${place.shortText}</p>
+      </div>
+    `;
+
     L.marker(place.coords)
       .addTo(map)
-      .bindPopup(`<b>${place.name}</b><br>${place.desc}`);
+      .bindPopup(popupHtml);
   });
-
 </script>
 
 </body>
