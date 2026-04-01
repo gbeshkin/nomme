@@ -1,61 +1,3 @@
-<!DOCTYPE html>
-<html lang="et">
-<head>
-  <meta charset="UTF-8" />
-  <title>Nõmme ajalooline kaart</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
-
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-    }
-
-    #map {
-      height: 100vh;
-    }
-
-    .title {
-      position: absolute;
-      z-index: 1000;
-      background: white;
-      padding: 10px 15px;
-      margin: 10px;
-      border-radius: 8px;
-      font-weight: bold;
-    }
-
-    .popup-content {
-      width: 220px;
-    }
-
-    .popup-content img {
-      width: 100%;
-      height: 120px;
-      object-fit: cover;
-      border-radius: 8px;
-      margin-bottom: 8px;
-    }
-
-    .popup-content h3 {
-      margin: 0 0 6px 0;
-      font-size: 16px;
-    }
-
-    .popup-content p {
-      margin: 0;
-      font-size: 13px;
-      line-height: 1.4;
-    }
-  </style>
-</head>
-<body>
-
-<div class="title">📍 Nõmme ajalooline kaart</div>
-<div id="map"></div>
-
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
   const map = L.map('map').setView([59.385, 24.677], 13);
 
@@ -63,77 +5,288 @@
     attribution: '&copy; OpenStreetMap'
   }).addTo(map);
 
-  const places = [
+  const featuredPlaces = [
     {
       name: "Glehni loss",
-      coords: [59.3866, 24.6686],
-      shortText: "Nõmme kuulsaim ajalooline ehitis, mille rajas Nikolai von Glehn.",
+      query: "Glehni loss, Tallinn, Estonia",
+      shortText: "Nõmme tuntuim ajalooline maamärk.",
       image: "https://upload.wikimedia.org/wikipedia/commons/1/11/Glehni_loss_2025.jpg"
     },
     {
       name: "Glehni park",
-      coords: [59.3863, 24.6692],
-      shortText: "Ajalooline park, kus asuvad kuulsad skulptuurid ja jalutusteed.",
+      query: "Glehni park, Tallinn, Estonia",
+      shortText: "Ajalooline park ja jalutuskoht.",
+      image: "https://upload.wikimedia.org/wikipedia/commons/3/32/%C2%ABKrokodill%C2%BB_Glehni_pargis_89.jpg"
+    },
+    {
+      name: "Kalevipoja skulptuur",
+      query: "Kalevipoeg Glehni park, Tallinn, Estonia",
+      shortText: "Üks Glehni pargi kuulsamaid skulptuure.",
+      image: "https://upload.wikimedia.org/wikipedia/commons/1/14/Glehni_krokodill_1.jpg"
+    },
+    {
+      name: "Glehni krokodill",
+      query: "Glehni krokodill, Tallinn, Estonia",
+      shortText: "Nõmme üks omapärasemaid sümboleid.",
       image: "https://upload.wikimedia.org/wikipedia/commons/3/32/%C2%ABKrokodill%C2%BB_Glehni_pargis_89.jpg"
     },
     {
       name: "Nõmme turg",
-      coords: [59.3869, 24.6842],
-      shortText: "Traditsiooniline turg, mis on olnud kohaliku elu keskpunkt juba aastakümneid.",
+      query: "Nõmme turg, Tallinn, Estonia",
+      shortText: "Ajalooline turuhoone ja kohaliku elu keskpunkt.",
       image: "https://visitestonia.com/images/3316958/_DSF9546.jpg"
     },
     {
       name: "Nõmme raudteejaam",
-      coords: [59.3865, 24.6837],
-      shortText: "Raudteejaam, mille ümber hakkas kujunema kogu Nõmme piirkond.",
+      query: "Nõmme raudteejaam, Tallinn, Estonia",
+      shortText: "Raudteejaam, mille ümber hakkas Nõmme kasvama.",
       image: "https://upload.wikimedia.org/wikipedia/commons/9/95/N%C3%B5mme_railway_station_2024.jpg"
     },
     {
       name: "Nõmme muuseum",
-      coords: [59.3864, 24.6835],
-      shortText: "Muuseum, kus saab tutvuda Nõmme ajaloo ja kohaliku elu arenguga.",
+      query: "Jaama 18, Tallinn, Estonia",
+      shortText: "Muuseum ajaloolises jaamahoones.",
       image: "https://live.s3.teliahybridcloud.com/s3fs-public/image_bank_foto/2023-01/N%C3%B5mme%20muuseum.jpg"
     },
     {
       name: "Nõmme Rahu kirik",
-      coords: [59.3815, 24.6766],
-      shortText: "Nõmme oluline ajalooline kirik ja kohaliku kogukonna sümbol.",
+      query: "Nõmme Rahu kirik, Tallinn, Estonia",
+      shortText: "Oluline ajalooline kirik Nõmmel.",
       image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/N6mme_rahu_kirik_2007_veebruar.jpg/960px-N6mme_rahu_kirik_2007_veebruar.jpg"
     },
     {
       name: "Rahumäe kalmistu",
-      coords: [59.3755, 24.6933],
-      shortText: "Ajalooline kalmistu, mis peegeldab piirkonna kultuurilugu.",
+      query: "Rahumäe kalmistu, Tallinn, Estonia",
+      shortText: "Ajalooline kalmistu ja oluline mälupaik.",
       image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Rahum%C3%A4e_kalmistu_peav%C3%A4rav.jpg/960px-Rahum%C3%A4e_kalmistu_peav%C3%A4rav.jpg"
     },
     {
       name: "Nõmme-Mustamäe maastikukaitseala",
-      coords: [59.395, 24.660],
-      shortText: "Kaunis loodusala, kus kohtuvad Nõmme ajalugu ja metsamaastik.",
+      query: "Nõmme-Mustamäe maastikukaitseala, Tallinn, Estonia",
+      shortText: "Loodus- ja ajaloolise maastiku ala.",
       image: "https://visitestonia.com/images/3306490/N%C3%B5mme-Mustam%C3%A4e_maastikukaitseala.jpg"
     },
     {
       name: "Glehni allikas",
-      coords: [59.3860, 24.6675],
-      shortText: "Looduslik allikas, mis on seotud Glehni pargi ajaloolise ümbrusega.",
+      query: "Glehni allikas, Tallinn, Estonia",
+      shortText: "Ajaloolise ümbrusega seotud looduslik allikas.",
       image: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Glehni_allikas.jpg/800px-Glehni_allikas.jpg"
+    },
+    {
+      name: "Hiiu raudteejaam",
+      query: "Hiiu raudteejaam, Tallinn, Estonia",
+      shortText: "Ajalooline peatus Nõmme arenguloos.",
+      image: ""
+    },
+    {
+      name: "Kivimäe raudteejaam",
+      query: "Kivimäe raudteejaam, Tallinn, Estonia",
+      shortText: "Ajalooline Nõmme raudteepeatus.",
+      image: ""
+    },
+    {
+      name: "Pääsküla raudteejaam",
+      query: "Pääsküla raudteejaam, Tallinn, Estonia",
+      shortText: "Oluline ajalooline peatus läänepoolsel Nõmmel.",
+      image: ""
+    },
+    {
+      name: "Liiva raudteejaam",
+      query: "Liiva raudteejaam, Tallinn, Estonia",
+      shortText: "Ajaloolise Nõmme piirkonna oluline ühenduspunkt.",
+      image: ""
+    },
+    {
+      name: "Hiiu viljaelevaator",
+      query: "Hiiu viljaelevaator, Tallinn, Estonia",
+      shortText: "1950. aastate tööstuslik maamärk.",
+      image: ""
+    },
+    {
+      name: "Mustamäe suusahüppemägi",
+      query: "Mustamäe suusahüppemägi, Tallinn, Estonia",
+      shortText: "Ajalooline spordipaik Nõmme serval.",
+      image: ""
+    },
+    {
+      name: "Hiiu staadion",
+      query: "Hiiu staadion, Tallinn, Estonia",
+      shortText: "Tuntud ajaloolise tähtsusega spordiala.",
+      image: ""
+    },
+    {
+      name: "Nurme tänava residents",
+      query: "Nurme 47, Tallinn, Estonia",
+      shortText: "1932. aasta esinduslik villa-residents.",
+      image: ""
+    },
+    {
+      name: "Nõmme Maja",
+      query: "Valdeku 13, Tallinn, Estonia",
+      shortText: "Nõmme kohaliku kultuuriloo oluline hoone.",
+      image: ""
     }
   ];
 
-  places.forEach(place => {
-    const popupHtml = `
-      <div class="popup-content">
-        <img src="${place.image}" alt="${place.name}">
-        <h3>${place.name}</h3>
-        <p>${place.shortText}</p>
+  const addressPlaces = [
+    "Harku tn 5",
+    "Harku tn 54",
+    "Hiiu tn 40a",
+    "Hiiu-Maleva tn 4",
+    "Ilmarise tn 18",
+    "J. V. Jannseni tn 29",
+    "Kalda tn 22a",
+    "Kaldapealse tn 4",
+    "Karuse tn 9 / Sinirebase tn 15",
+    "Kitsas tn 12",
+    "Kurni tn 1 / Risti tn 10",
+    "Kvartsliiva tn 6",
+    "Külvi tn 17",
+    "Lauliku tn 37",
+    "Lemmiku tn 40",
+    "Lemmiku tn 6",
+    "M. Metsanurga tn 24",
+    "Männiku tee 58",
+    "Männiku tee 63",
+    "Männimetsa põik 9",
+    "Orava tn 8",
+    "Pärnu mnt 269",
+    "Pärnu mnt 304",
+    "Pääsküla tn 20",
+    "Rajametsa tn 12b",
+    "Rao tn 3",
+    "Rännaku pst 6",
+    "Rõõmu tn 6",
+    "Seene tn 17",
+    "Sisaski tn 41",
+    "Suusa tn 3",
+    "Taara tn 50",
+    "Trummi tn 25",
+    "Tähetorni tn 21k",
+    "Valdeku tn 107b",
+    "Valdeku tn 5",
+    "Viisi tn 18",
+    "Viljandi mnt 4",
+    "Võidu tn 27",
+    "Aate tn 14",
+    "J. V. Jannseni tn 13",
+    "Kalda tn 7a",
+    "Kärje tn 7",
+    "Pärnu mnt 245a/c",
+    "Viljandi mnt 41",
+    "Idakaare tn 21",
+    "Nugise tn 20",
+    "Sinirebase tn 9",
+    "Vahe tn 7",
+    "Võidu tn 82",
+    "Kõue tn 2",
+    "Idakaare tn 19",
+    "Põllu põik 7",
+    "Männiku tee 60",
+    "Sihi tn 173",
+    "Seljaku tn 5",
+    "Sõlme tn 22",
+    "Viljandi mnt 14a",
+    "Päikese pst 66",
+    "Raudtee tn 60a",
+    "Pärnu mnt 540a",
+    "Pärnu mnt 406",
+    "Raudtee tn 73",
+    "Turu plats 4",
+    "Läänekaare tn 3",
+    "Mesila tn 6",
+    "Nõmme-Kase tn 10",
+    "Palu tn 1",
+    "Paplite pst 12",
+    "Raudtee tn 55",
+    "Rohula tn 19",
+    "Sinilille tn 7",
+    "Suvila 42",
+    "Kraavi tn 47",
+    "Läike tn 14",
+    "Hommiku tn 2 / Lauliku tn 4f",
+    "Kalmistu tee 2a",
+    "Valguse 8",
+    "Toome pst 5",
+    "Ränduri tn 18",
+    "Trummi tn 15",
+    "Pärja tn 58",
+    "Kadaka pst 84",
+    "Harku tn 36",
+    "Lauliku tn 5",
+    "Metsa tn 21"
+  ].map(address => ({
+    name: address,
+    query: `${address}, Nõmme, Tallinn, Estonia`,
+    shortText: "Miljööväärtuslik või ajalooliselt oluline objekt Nõmmel.",
+    image: ""
+  }));
+
+  const places = [...featuredPlaces, ...addressPlaces];
+
+  const markerCluster = L.layerGroup().addTo(map);
+  const bounds = [];
+
+  function popupHtml(place) {
+    const imageHtml = place.image
+      ? `<img src="${place.image}" alt="${place.name}" style="width:100%;height:120px;object-fit:cover;border-radius:8px;margin-bottom:8px;">`
+      : "";
+
+    return `
+      <div style="width:220px;">
+        ${imageHtml}
+        <h3 style="margin:0 0 6px 0;font-size:16px;">${place.name}</h3>
+        <p style="margin:0;font-size:13px;line-height:1.4;">${place.shortText}</p>
       </div>
     `;
+  }
 
-    L.marker(place.coords)
-      .addTo(map)
-      .bindPopup(popupHtml);
-  });
+  async function geocode(query) {
+    const cacheKey = `nomme-geocode:${query}`;
+    const cached = localStorage.getItem(cacheKey);
+    if (cached) return JSON.parse(cached);
+
+    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=1`;
+    const res = await fetch(url, {
+      headers: { "Accept-Language": "et" }
+    });
+    const data = await res.json();
+
+    if (!data || !data.length) return null;
+
+    const result = {
+      lat: parseFloat(data[0].lat),
+      lon: parseFloat(data[0].lon)
+    };
+
+    localStorage.setItem(cacheKey, JSON.stringify(result));
+    return result;
+  }
+
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  async function addPlaces() {
+    for (const place of places) {
+      try {
+        const point = await geocode(place.query);
+        if (!point) continue;
+
+        const marker = L.marker([point.lat, point.lon]).addTo(markerCluster);
+        marker.bindPopup(popupHtml(place));
+        bounds.push([point.lat, point.lon]);
+
+        await sleep(350);
+      } catch (e) {
+        console.warn("Ei õnnestunud geokodeerida:", place.name, e);
+      }
+    }
+
+    if (bounds.length) {
+      map.fitBounds(bounds, { padding: [30, 30] });
+    }
+  }
+
+  addPlaces();
 </script>
-
-</body>
-</html>
